@@ -6,20 +6,23 @@
 {% block hero %}
 <section class="hero">
   <div class="hero-bg"></div>
-    <figure class="hero-portrait-left">
-    <img src="{% static 'images/Alfredo.png' %}" alt="Alfredo Canales" loading="eager" decoding="async">
-  </figure>
+
+  <div class="chip">Bienvenido a mi espacio digital</div>
 
   <div class="container hero-content">
-    <div class="chip">Bienvenido a mi espacio digital</div>
+    
 
-    <h1>
-      Alfredo Canales 
-      <span>Ingeniero Civil Industrial</span>
-    </h1>
+    <!-- Nombre en H1 -->
+    <h1 class="hero-title">Alfredo Canales</h1>
+      <figure class="hero-portrait-left">
+    <img src="{% static 'images/Alfredo.png' %}" alt="Alfredo Canales" loading="eager" decoding="async">
+  </figure>
+    <!-- Subtítulo en H2 debajo -->
+    <h2 class="hero-subtitle">Ingeniero Civil Industrial</h2>
 
     <p class="lead">
-    Inteligencia artificial - Analista - Aplicaciones web - Machine Learning - Optimización -Gestión de proyectos - Finanzas
+      Inteligencia artificial - Analista - Aplicaciones web - Machine Learning - Optimización -
+      Gestión de proyectos - Finanzas
     </p>
 
     <div class="cta">
@@ -28,12 +31,10 @@
     </div>
   </div>
 
-  <!-- ondas decorativas -->
-  <div class="waves">
-    <span></span><span></span><span></span>
-  </div>
+  <div class="waves"><span></span><span></span><span></span></div>
 </section>
 {% endblock %}
+
 
 {% block content %}
 
