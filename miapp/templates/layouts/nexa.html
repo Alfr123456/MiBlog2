@@ -1,0 +1,134 @@
+{% extends "layouts/layout.html" %}
+{% load static %}
+
+{% block title %}Nexalyze AI{% endblock %}
+
+
+{% block content %}
+<div class="memoria-page">
+
+  <h1>Nexalyze AI</h1>
+
+  <!-- Badges de habilidades (una sola línea con scroll si no caben) -->
+  <ul class="skill-badges">
+    <li class="badge">Inteligencia Artificial</li>
+    <li class="badge">Agentes de IA</li>
+    <li class="badge">Python</li>
+    <li class="badge">LLM</li>
+    <li class="badge">Low-Code</li>
+    <li class="badge">Aplicaciones Web</li>
+    <li class="badge">Industria</li>
+    <li class="badge">Análisis de datos</li>
+    <li class="badge">Reportabilidad</li>
+  </ul>
+
+  <!-- Intro -->
+  <p>
+    Nexalyze AI es una <strong>startup familiar</strong> dedicada a diseñar y construir
+    <strong>aplicaciones empresariales</strong> que integran <em>inteligencia artificial</em>
+    para automatizar procesos, mejorar decisiones y simplificar la gestión de datos
+    en <strong>pymes e industria</strong>.
+  </p>
+
+  <figure>
+    <img src="{% static 'images/nexa.png' %}" alt="Logo de Nexalyze AI" width="600" height="300">
+    <figcaption>Identidad visual de Nexalyze AI.</figcaption>
+  </figure>
+
+  <h2>Qué hacemos</h2>
+  <ul>
+    <li>Desarrollo de aplicaciones <strong>web</strong> y <strong>low-code</strong> conectadas a tus fuentes de datos.</li>
+    <li>Implementación de <strong>agentes de IA</strong> (LLM) para atención, back-office y operaciones.</li>
+    <li><strong>Analítica</strong> y <strong>reportabilidad</strong> con tableros de control y KPIs accionables.</li>
+    <li>Integraciones con servicios externos (APIs), orquestación y automatización.</li>
+  </ul>
+
+  <h2>Proyectos creados</h2>
+
+  <!-- Kinesiología -->
+  <section class="card-container">
+    <h3>App para Kinesiología con Agente de IA</h3>
+    <p>
+      Plataforma para <strong>gestionar citas, sesiones y pagos</strong> en la consulta KineMax.
+      Incluye un <strong>módulo de tienda/inventario</strong> para venta de productos y un
+      <strong>agente de IA</strong> que agenda, confirma y responde dudas de pacientes.
+    </p>
+    <ul>
+      <li>Agenda inteligente (recordatorios, reprogramaciones y estados de atención).</li>
+      <li>Registro de pagos, vouchers y reportes rápidos por período.</li>
+      <li>Categorías de productos, stock y trazabilidad de ventas.</li>
+    </ul>
+  </section>
+
+  <!-- Gimnasio -->
+  <section class="card-container">
+    <h3>App de Gestión para Gimnasio</h3>
+    <p>
+      Sistema para <strong>membresías</strong> y <strong>pagos</strong>, con alertas de vencimiento,
+      <strong>módulo de tienda/inventario</strong> y un <strong>módulo financiero</strong> con
+      reportes de flujo, proyección y desempeño por área.
+    </p>
+    <ul>
+      <li>Panel de clientes (estado, última asistencia y medio de pago).</li>
+      <li>KPIs: ingresos, morosidad, ticket promedio y ventas por ítem.</li>
+      <li>Velocidad de caja y conciliación básica por día.</li>
+    </ul>
+  </section>
+
+  <!-- Contratista agrícola -->
+  <section class="card-container">
+    <h3>App para Empresa Contratista de Servicios Agrícolas</h3>
+    <p>
+      Herramienta para <strong>gestionar trabajadores, cuadrillas, labores y pagos</strong>,
+      con generación automática de <strong>contratos</strong> y un módulo financiero para
+      costos por faena y rentabilidad por proyecto/campo.
+    </p>
+    <ul>
+      <li>Planificación de labores y control de asistencia.</li>
+      <li>Liquidación por tarea/hora y anexos de contrato.</li>
+      <li>Costeo por insumo, maquinaria y mano de obra.</li>
+    </ul>
+  </section>
+
+  <!-- Armado de cajas -->
+  <section class="card-container">
+    <h3>App para Servicios de Armado de Cajas</h3>
+    <p>
+      Automatización de <strong>reportes de producción</strong> por línea y turno, con
+      <strong>margen por cliente/orden</strong> y tablero financiero para visualizar
+      <strong>ganancias por tipo de armado</strong>.
+    </p>
+    <ul>
+      <li>Captura operativa simple (rendimiento y merma por lote).</li>
+      <li>Alertas de desvío (productividad y scrap).</li>
+      <li>Resumen ejecutivo: ingresos, costos y utilidad por período.</li>
+    </ul>
+  </section>
+
+  <!-- Cierre / CTA -->
+  <section class="more-section">
+    <h2 class="more-title">¿Conversamos tu caso?</h2>
+    <p>
+      Cuéntame tu proceso y armamos un flujo con <strong>app + IA + reportes</strong>
+      para que tomes decisiones con datos y automatices tareas repetitivas.
+    </p>
+  </section>
+<section class="contacto-final">
+  <div class="contacto-wrap">
+    <span class="contacto-label">BÚSCANOS EN:</span>
+    <a class="contacto-link" href="https://nexalyzeai.com/inicio/" target="_blank" rel="noopener">
+      nexalyzeai.com/inicio
+    </a>
+
+    <span class="contacto-sep">•</span>
+
+    <span class="contacto-label">O ESCRÍBEME AL:</span>
+    <a class="contacto-link" href="https://wa.me/56978142388" target="_blank" rel="noopener">
+      +56 9 7814 2388
+    </a>
+  </div>
+</section>
+
+</div>
+{% endblock %}
+

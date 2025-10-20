@@ -1,0 +1,83 @@
+{% extends "layouts/layout.html" %}
+{% load static %}
+
+{% block title %}Proyectos — Alfredo Canales{% endblock %}
+
+{% block hero %}
+<section class="hero hero-compact">
+  <div class="container hero-content">
+    <h1 class="section-title">Mis <span>Proyectos</span></h1>
+    <p class="lead">Casos reales y experimentos donde combino ingeniería, analítica y desarrollo web.</p>
+  </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<section class="projects">
+  <div class="cards">
+
+    <!-- Tarjeta 1 -->
+    <article class="project-card">
+      <a class="pc-cover" href="memoria" aria-label="Abrir proyecto">
+        <img src="{% static 'images/imagen-machine learning.png' %}" alt="Vista previa del proyecto 1">
+        <span class="chip">Tecnología</span>
+      </a>
+      <div class="pc-body">
+        <h3><a href="memoria">Pronóstico de la producción de hidrógeno verde en el norte de Chile utilizando modelos econométricos y de machine learning.</a></h3>
+        <p>Plataforma modular con Django + API + Frontend responsivo. Enfoque en rendimiento y DX.</p>
+        <div class="pc-meta">
+          <span title="Fecha">📅 15 Ene 2025</span>
+          <span title="Duración lectura">⏱ 5 min</span>
+          <a class="pc-cta" href="memoria">Ver más →</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Tarjeta 2 -->
+    <article class="project-card">
+      <a class="pc-cover" href="snake" aria-label="Abrir proyecto">
+        <img src="{% static 'images/imagen-serpiente.png' %}" alt="Proyecto UI/UX">
+        <span class="chip violet">Diseño</span>
+      </a>
+      <div class="pc-body">
+        <h3><a href="snake">Snake Game con Q-Learning, control por gestos e interfaz en C++</a></h3>
+        <p>Sistema de diseño, componentes accesibles y tests A/B para mejorar conversión.</p>
+        <div class="pc-meta">
+          <span>📅 1 de agosto de 2025/span>
+          <span>⏱ 5 min</span>
+          <a class="pc-cta" href="snake">Ver más →</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Tarjeta 3 -->
+    <article class="project-card">
+      <a class="pc-cover" href="nexa" aria-label="Abrir proyecto">
+        <img src="{% static 'images/imagen-nexalyze.png' %}" alt="Proyecto IA">
+        <span class="chip indigo">IA</span>
+      </a>
+      <div class="pc-body">
+        <h3><a href="nexa">Nexalyze AI</a></h3>
+        <p>Aplicaciones de IA para automatizar procesos y generar insights accionables.</p>
+        <div class="pc-meta">
+          <span>📅 10 Ene 2025</span>
+          <span>⏱ 6 min</span>
+          <a class="pc-cta" href="nexa">Ver más →</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Más tarjetas de ejemplo (clona/edita) -->
+    <article class="project-card">
+      <a class="pc-cover" href="ayudantias"><img src="{% static 'images/logo_usm.png' %}" alt=""><span class="chip">Tecnología</span></a>
+      <div class="pc-body">
+        <h3><a href="ayudantias">Ayudante en Gestión de Operaciones, Gestión de Calidad Total y Power BI</a></h3>
+        <p>Patrones y prácticas para apps escalables con APIs limpias y observabilidad.</p>
+        <div class="pc-meta"><span>📅 8 Ene 2025</span><span>⏱ 8 min</span><a class="pc-cta" href="ayudantias">Ver más →</a></div>
+      </div>
+    </article>
+
+
+  </div>
+</section>
+{% endblock %}

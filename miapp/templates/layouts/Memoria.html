@@ -1,0 +1,217 @@
+{% extends "layouts/layout.html" %}
+{% load static %}
+
+
+{% block title %}Pronostico de la produccion de hidrogeno verde en el norte de chile utilizando modelos econometricos y de machine learning.{% endblock %}
+
+
+{% block content %}
+<div class="memoria-page">
+
+<h1>Pronóstico de la producción de hidrógeno verde en el norte de Chile utilizando modelos econométricos y de <em>machine learning</em></h1>
+<ul class="skill-badges">
+  <li class="badge">Machine Learning</li>
+  <li class="badge">Econometría</li>
+  <li class="badge">Python</li>
+  <li class="badge">Pandas</li>
+  <li class="badge">NumPy</li>
+  <li class="badge">Matplotlib</li>
+  <li class="badge">scikit-learn</li>
+  <li class="badge">TensorFlow</li>
+  <li class="badge">Energía</li>
+  <li class="badge"> Análisis de datos </li>
+</ul>
+
+<p>
+Este proyecto modela la irradiancia global horizontal (GHI) en el norte de Chile para estimar la
+generación fotovoltaica y, a partir de ella, la producción diaria de hidrógeno verde (kg/m²) mediante un electrolizador.
+Se implementaron modelos de <em>machine learning</em> (LSTM, BiLSTM y SVM) y modelos econométricos (ARIMAX y SARIMAX),
+con y sin descomposición temporal CEEMDAN. La segmentación por estaciones del año y las pruebas de
+estacionariedad permitieron comparar enfoques y seleccionar el mejor desempeño global.
+</p>
+
+<h2>Datos y proceso ETL</h2>
+<ul>
+  <li><strong>Extract:</strong> Descarga de series históricas del Explorador Solar para un punto de alta irradiancia en la región de Antofagasta (GHI y variables meteorológicas asociadas).</li>
+  <li><strong>Transform:</strong> Limpieza, validación de consistencia, creación de variables temporales (hora, día, mes, estación), normalización y preparación de los conjuntos <em>train</em>/<em>test</em>.</li>
+  <li><strong>Load:</strong> Conformación de <em>datasets</em> por estación y almacenamiento final para el entrenamiento de los modelos.</li>
+</ul>
+
+<figure>
+  <img src="{% static 'images/Memoria/ghi_promedio.png' %}" alt="GHI promedio por hora del día en cada mes" width="600" height="300">
+  <figcaption>GHI promedio por hora del día para cada mes.</figcaption>
+</figure>
+
+<h2>Análisis exploratorio y estadístico</h2>
+<p>
+Se evaluaron momentos (media, mediana), dispersión (desviación estándar),
+asimetría, curtosis y pruebas de hipótesis (Jarque–Bera, Kolmogorov–Smirnov, Ljung–Box y ADF),
+confirmando la no normalidad y la presencia de memoria temporal. La segmentación estacional
+mejoró la estabilidad de los modelos y su capacidad de generalización.
+</p>
+
+<section class="card-container">
+  <table class="ghi-table">
+    <caption>Tabla 3: Estadísticas de irradiancia global horizontal (GHI) por estación.</caption>
+    <thead>
+      <tr>
+        <th scope="col" class="head-label"></th>
+        <th scope="col" class="col-verano">Verano</th>
+        <th scope="col" class="col-otono">Otoño</th>
+        <th scope="col" class="col-invierno">Invierno</th>
+        <th scope="col" class="col-primavera">Primavera</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row" class="row-label">Media (W/m²)</th><td>346.36</td><td>258.56</td><td>259.94</td><td>385.28</td></tr>
+      <tr><th scope="row" class="row-label">Mediana (W/m²)</th><td>56.24</td><td>0.00</td><td>0.00</td><td>15.74</td></tr>
+      <tr><th scope="row" class="row-label">Máximo (W/m²)</th><td>1299.74</td><td>1133.92</td><td>1129.80</td><td>1267.80</td></tr>
+      <tr><th scope="row" class="row-label">Mínimo (W/m²)</th><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td></tr>
+      <tr><th scope="row" class="row-label">Desviación estándar (W/m²)</th><td>432.53</td><td>348.51</td><td>350.49</td><td>459.25</td></tr>
+      <tr><th scope="row" class="row-label">Asimetría</th><td>0.81</td><td>0.93</td><td>0.93</td><td>0.66</td></tr>
+      <tr><th scope="row" class="row-label">Curtosis</th><td>-0.95</td><td>-0.73</td><td>-0.71</td><td>-1.22</td></tr>
+      <tr><th scope="row" class="row-label">Jarque–Bera (p-valor)</th><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td></tr>
+      <tr><th scope="row" class="row-label">Kolmogorov–Smirnov (p-valor)</th><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td></tr>
+      <tr><th scope="row" class="row-label">Ljung–Box (p-valor)</th><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td></tr>
+      <tr><th scope="row" class="row-label">ADF (p-valor)</th><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<h2>Correlación e información mutua</h2>
+<p>
+Se cuantificó la relación entre variables temporales y GHI con coeficientes de Pearson y Spearman, y se
+estimó la información mutua para capturar dependencias no lineales; los resultados orientaron la ingeniería
+de variables y la selección de entradas por estación.
+</p>
+
+<figure>
+  <img src="{% static 'images/Memoria/Correlacion pearson Verano.png' %}" alt="Correlación Pearson/Spearman en verano" width="600" height="300">
+  <figcaption>Correlaciones en verano.</figcaption>
+</figure>
+
+<h2>Modelos y evaluación</h2>
+
+<p>
+Se entrenaron modelos LSTM, BiLSTM y SVM, junto a ARIMAX y SARIMAX, con y sin CEEMDAN. 
+La evaluación se realizó en tres etapas: <strong>Entrenamiento</strong>, <strong>Prueba</strong> y <strong>Desempeño General</strong> (todo el período). 
+Las métricas usadas fueron <strong>R²</strong> (mayor es mejor), <strong>MSE</strong>, <strong>RMSE</strong> y <strong>MAE</strong> (menor es mejor).
+</p>
+
+<h3>Método de puntajes (cómo se decide el “ganador”)</h3>
+<ul>
+  <li>Cada modelo recibe un puntaje de <strong>0 a 10</strong> en cada etapa (<em>Entrenamiento</em>, <em>Prueba</em>, <em>General</em>) según su posición relativa en las métricas (mejores métricas ⇒ más puntos).</li>
+  <li>Para obtener el puntaje final por estación se usa un <strong>promedio ponderado</strong> que prioriza la capacidad de generalizar:
+    <div style="margin:.4rem 0 .2rem 0;"><code>Total = 0.25 × Entrenamiento + 0.50 × Prueba + 0.25 × General</code></div>
+    Es decir, <strong>Prueba pesa el 50%</strong>, porque refleja el rendimiento fuera de muestra; Entrenamiento y General pesan 25% cada uno.
+  </li>
+</ul>
+
+<h3>Verano – período de prueba (métricas de error)</h3>
+<section class="card-container">
+  <table class="ghi-table">
+    <caption>Tabla: Resultados en <strong>prueba</strong> para la estación de <strong>verano</strong>.</caption>
+    <thead>
+      <tr>
+        <th>Modelo</th>
+        <th>R²</th>
+        <th>MSE</th>
+        <th>RMSE</th>
+        <th>MAE</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><th>SVM</th>              <td>0.9239</td><td>14639.9586</td><td>120.9957</td><td>68.5319</td></tr>
+      <tr><th>SVM + CEEMDAN</th>   <td>0.9074</td><td>17810.1338</td><td>133.4546</td><td>87.1541</td></tr>
+      <tr><th>LSTM</th>            <td>0.7841</td><td>41529.1307</td><td>203.7870</td><td>123.2484</td></tr>
+      <tr><th>LSTM + CEEMDAN</th>  <td>0.9489</td><td> 9837.7396</td><td> 99.1854</td><td> 52.3892</td></tr>
+      <tr><th>BiLSTM</th>          <td>0.9174</td><td>15889.7730</td><td>126.0546</td><td> 85.0381</td></tr>
+      <tr><th>BiLSTM + CEEMDAN</th><td>0.9482</td><td> 9974.1343</td><td> 99.8706</td><td> 49.6976</td></tr>
+      <tr><th>ARIMAX</th>          <td>0.5710</td><td>82511.2194</td><td>287.2477</td><td>213.8534</td></tr>
+      <tr><th>SARIMAX</th>         <td>0.7727</td><td>43711.4490</td><td>209.0728</td><td>137.3238</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<p class="muted">
+En verano, <strong>LSTM + CEEMDAN</strong> logra el mejor equilibrio de error (MSE/ RMSE bajos y MAE muy bajo).
+<em>BiLSTM + CEEMDAN</em> queda muy cerca (mejor MAE), y ambos superan ampliamente a los modelos econométricos.
+Con la ponderación (25% Entrenamiento, 50% Prueba, 25% General), el orden final favorece a los modelos
+con mejor rendimiento fuera de muestra.
+</p>
+
+<h3>Lectura rápida de los puntajes</h3>
+<ul>
+  <li><strong>BiLSTM + CEEMDAN</strong>: suele dominar en <em>Invierno</em> y es muy competitivo en <em>Verano</em> (excelente generalización).</li>
+  <li><strong>LSTM + CEEMDAN</strong>: destaca en <em>Otoño</em> y compite por el primer lugar en <em>Verano</em>.</li>
+  <li><strong>BiLSTM</strong> (sin CEEMDAN): líder en <em>Primavera</em>, donde la descomposición no aporta tanto.</li>
+  <li><strong>Modelos econométricos</strong> (ARIMAX/SARIMAX): correctos en ajuste de entrenamiento en algunos casos, pero con peores errores en prueba.</li>
+</ul>
+
+
+<h3>Hallazgos clave – Comparación de modelos por estación</h3>
+
+<section class="card-container">
+  <table class="ghi-table">
+    <caption>Tabla 4: Desempeño comparativo de modelos de predicción por estación (puntajes sobre 10).</caption>
+    <thead>
+      <tr>
+        <th>Modelo</th>
+        <th class="col-verano">Verano</th>
+        <th class="col-otono">Otoño</th>
+        <th class="col-invierno">Invierno</th>
+        <th class="col-primavera">Primavera</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><th>SVM</th><td>8.75</td><td>7.75</td><td>7.25</td><td>6.50</td></tr>
+      <tr><th>SVM + CEEMDAN</th><td>6.00</td><td>3.75</td><td>5.75</td><td>5.00</td></tr>
+      <tr><th>LSTM</th><td>4.50</td><td>5.50</td><td>4.50</td><td>9.00</td></tr>
+      <tr><th>LSTM + CEEMDAN</th><td>9.00</td><td><strong>9.75</strong></td><td>7.50</td><td>7.75</td></tr>
+      <tr><th>BiLSTM</th><td>6.50</td><td>7.75</td><td>9.00</td><td><strong>10.00</strong></td></tr>
+      <tr><th>BiLSTM + CEEMDAN</th><td><strong>9.25</strong></td><td>8.75</td><td><strong>10.00</strong></td><td>6.75</td></tr>
+      <tr><th>ARIMAX</th><td>3.00</td><td>3.25</td><td>5.00</td><td>2.00</td></tr>
+      <tr><th>SARIMAX</th><td>2.00</td><td>2.50</td><td>0.00</td><td>2.00</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<p class="muted">
+Los modelos <strong>BiLSTM + CEEMDAN</strong> e <strong>LSTM + CEEMDAN</strong> obtuvieron los mejores resultados generales.
+El primero destacó en verano e invierno, mientras que el segundo fue superior en otoño.
+En primavera, el <strong>BiLSTM</strong> sin descomposición alcanzó el rendimiento máximo (10/10).
+</p>
+
+<h2>Del sol al hidrógeno</h2>
+<p>
+Con la GHI pronosticada se modeló la potencia fotovoltaica y se acopló a un electrolizador para estimar la
+producción diaria de hidrógeno verde por metro cuadrado, caracterizando la estacionalidad (mayores rendimientos
+en verano y primavera) y la variabilidad intradía. Este flujo cierra el ciclo de predicción desde clima → energía → hidrógeno.
+</p>
+
+<h2>Conclusión</h2>
+<p>
+Las redes neuronales profundas, especialmente BiLSTM con CEEMDAN, demostraron una alta capacidad
+para capturar la complejidad temporal de la irradiancia en el Desierto de Atacama y permiten estimar con precisión la
+producción de hidrógeno verde, ofreciendo una base sólida para el dimensionamiento de sistemas fotovoltaicos–electrolizador
+y la planificación de proyectos energéticos en la zona norte de Chile.
+</p>
+
+<section class="more-section">
+  <h2 class="more-title">¿Quieres abordar más?</h2>
+  <p>
+    Si te interesa profundizar en la metodología, resultados por estación y el flujo completo
+    de transformación GHI → energía → H₂, revisa el documento en el repositorio USM:
+    <a
+      class="more-link"
+      href="https://repositorio.usm.cl/server/api/core/bitstreams/58aa576b-3ebd-4614-a310-0a0c4f6707ea/content"
+      target="_blank"
+      rel="noopener"
+    >
+      Ver documento complementario
+    </a>.
+  </p>
+</section>
+</div>
+
+{% endblock %}

@@ -1,0 +1,150 @@
+{% extends "layouts/layout.html" %}
+{% load static %}
+
+{% block title %}snake game{% endblock %}
+
+
+{% block content %}
+
+<div class="memoria-page">
+
+  <h1>Snake Game con Q-Learning, Control por Gestos e Interfaz Personalizable</h1>
+    <ul class="skill-badges">
+    <li class="badge">Q-Learning</li>
+    <li class="badge">Reinforcement Learning</li>
+    <li class="badge">OpenCV</li>
+    <li class="badge">MediaPipe</li>
+    <li class="badge">C# / WPF</li>
+    <li class="badge">Python</li>
+    <li class="badge">NumPy</li>
+    <li class="badge">Pandas</li>
+    <li class="badge">UI/UX</li>
+    </ul>
+
+  <!-- INTRO -->
+  <p>
+    Este proyecto parte desde el clásico juego <em>Snake</em> y lo llevé a un nivel más avanzado incorporando:
+    <strong>Q-Learning</strong> para que la IA aprenda a jugar de forma autónoma, <strong>control por gestos</strong> con
+    <em>OpenCV + MediaPipe</em> y una <strong>interfaz</strong> que permite cambiar modos y ajustar hiperparámetros en tiempo real.
+  </p>
+
+  <!-- VIDEO DEMO -->
+  <section class="video-wrapper card-container">
+    <h2>Demo en video</h2>
+    <video class="video-player" width="960" height="540" controls preload="metadata" playsinline>
+      <source src="{% static 'images/snake/video.mp4' %}" type="video/mp4">
+      Tu navegador no soporta la reproducción de video HTML5.
+    </video>
+  </section>
+
+  <!-- INTERFAZ / UI -->
+  <h2>Interfaz y modos de juego</h2>
+  <ul>
+    <li><strong>Selector de modo:</strong> Manual vs. IA (Q-Learning).</li>
+    <li><strong>Controles de entrenamiento:</strong> ajuste de <em>learning rate</em> (α), factor de descuento (γ) y esquema de exploración (ε).</li>
+    <li><strong>Monitoreo:</strong> panel con recompensas por episodio, puntuación y velocidad de juego.</li>
+  </ul>
+
+  <!-- Q-LEARNING EXPLICACIÓN -->
+  <h2>Q-Learning: lógica de aprendizaje</h2>
+  <p>
+    El agente aprende una función de valor de acción <code>Q(s,a)</code> actualizando sus estimaciones con la regla:
+  </p>
+  <pre style="white-space:pre-wrap;margin:0;" aria-label="Q-learning update">
+Q(s,a) ← Q(s,a) + α [ r + γ · max<sub>a′</sub> Q(s′,a′) − Q(s,a) ]
+  </pre>
+  <p class="muted">
+    Donde <strong>α</strong> es la tasa de aprendizaje, <strong>γ</strong> el descuento del futuro, <strong>r</strong> la recompensa inmediata
+    y <code>max Q(s′,a′)</code> la mejor acción estimada en el nuevo estado.
+  </p>
+
+  <!-- TABLA HIPERPARÁMETROS -->
+  <section class="card-container">
+    <table class="ghi-table">
+      <caption>Tabla A: Hiperparámetros y configuración del entrenamiento</caption>
+      <thead>
+        <tr>
+          <th>Parámetro</th>
+          <th>Descripción</th>
+          <th>Valor / Esquema</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>α (learning rate)</th>
+          <td>Cuánto ajusta la nueva información al valor Q actual.</td>
+          <td>0.1 – 0.3 (ajustable desde la UI)</td>
+        </tr>
+        <tr>
+          <th>γ (discount)</th>
+          <td>Importancia del futuro vs. recompensa inmediata.</td>
+          <td>0.90 – 0.99</td>
+        </tr>
+        <tr>
+          <th>ε (exploración)</th>
+          <td>Probabilidad de explorar acciones aleatorias.</td>
+          <td>Decreciente: ε<sub>0</sub>=1.0 → ε<sub>min</sub>=0.05 (decay por episodio)</td>
+        </tr>
+        <tr>
+          <th>Recompensas</th>
+          <td>Señal de feedback para aprender la política.</td>
+          <td>Comer comida: +10 ·| Supervivencia/step: −0.01 ·| Colisión: −100</td>
+        </tr>
+        <tr>
+          <th>Representación del estado</th>
+          <td>Entorno percibido por la IA para decidir.</td>
+          <td>Dirección, posición relativa de la comida, colisiones cercanas, distancias discretizadas</td>
+        </tr>
+        <tr>
+          <th>Política</th>
+          <td>Selección de acción a partir de Q.</td>
+          <td><em>ε-greedy</em> (explotación con exploración controlada)</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- CONTROL POR GESTOS -->
+  <h2>Control por gestos (OpenCV + MediaPipe)</h2>
+  <ul>
+    <li>Detección de mano en tiempo real y extracción de <em>landmarks</em>.</li>
+    <li>Mapeo de la dirección de la mano → acción (arriba/abajo/izquierda/derecha).</li>
+    <li>Overlay visual en la UI que resalta la dirección detectada.</li>
+  </ul>
+
+  <!-- APRENDIZAJES / DESAFÍOS / SIGUIENTES PASOS -->
+  <h2>Qué aprendí</h2>
+  <ul>
+    <li>Diseño de bucles de juego (C# / WPF) y acople con módulos de IA/Python.</li>
+    <li>Implementación y ajuste fino de Q-Learning (exploración vs. explotación, <em>reward shaping</em>).</li>
+    <li>Visión computacional para gestos robustos con distintas condiciones de luz.</li>
+  </ul>
+
+  <h2>Desafíos</h2>
+  <ul>
+    <li>Estabilizar el aprendizaje con recompensas bien calibradas y estados informativos.</li>
+    <li>Evitar comportamiento miope (acumulación de pasos sin progresar) y ciclos indeseados.</li>
+    <li>Hacer el control por gestos confiable sin latencias ni falsos positivos.</li>
+  </ul>
+
+  <h2>Siguientes pasos</h2>
+  <ul>
+    <li>Refinar el <em>state space</em> y el <em>reward shaping</em> para acelerar la convergencia.</li>
+    <li>Agregar <em>ε-schedules</em> dinámicos y <em>early stopping</em> por paciencia.</li>
+    <li>Panel de analítica: retornos por episodio, distribución de acciones, mapas de Q.</li>
+  </ul>
+
+  <!-- CTA -->
+  <section class="more-section">
+    <h2 class="more-title">¿Quieres ver el código o probarlo?</h2>
+    <p>
+      Si te interesa el enfoque (Q-Learning + gestos + UI), conversemos. Puedo compartir el repositorio y
+      un <em>build</em> de prueba para tu feedback.
+    </p>
+  </section>
+
+</div>
+{% endblock %}
+
+
+
