@@ -245,6 +245,7 @@ img{ max-width:100%; display:block; }
     radial-gradient(800px 400px at 90% 20%, rgba(34,211,238,.10), transparent 60%),
     linear-gradient(180deg,#ffffff,#f8fbff);
   border-bottom: 1px solid rgba(17,24,39,.06);
+  
 }
 .section-title{
   text-align:center; margin: 0 0 8px;
@@ -682,3 +683,92 @@ figcaption{
   .hero-portrait-left{ display: none; }
 }
 
+/* ==== FIX: todo centrado en columna y SIN solapes ==== */
+.hero { 
+  position: relative;
+  padding-block: clamp(40px, 6vw, 96px);
+  overflow: clip;
+}
+.hero .container.hero-content{
+  max-width: 1060px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;   /* columna: H1 -> foto -> H2 -> texto -> CTA */
+  align-items: center;
+  text-align: center;
+  gap: clamp(10px, 1.6vw, 20px);
+  position: relative;
+  z-index: 1;
+}
+
+/* --- reset duro del retrato (para evitar estilos anteriores) --- */
+.hero-portrait-left{
+  position: static !important;   /* <— clave: saca el absolute */
+  z-index: auto !important;      /* no se superpone al texto */
+  transform: none !important;    /* por si había translate() */
+  margin: 6px auto !important;   /* centrado vertical/horizontal */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  border-radius: 50%/45%;        /* elipse */
+  aspect-ratio: 3 / 4;           /* proporción fija */
+  width: clamp(220px, 28vw, 360px);
+  max-width: 100%;
+  box-shadow: 0 10px 30px rgba(0,0,0,.08);
+  border: 4px solid rgba(255,255,255,.9);
+  background: #f7f7ff;
+}
+.hero-portrait-left img{
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+  border-radius: inherit; display: block;
+}
+
+/* Títulos */
+.hero-title{
+  font-size: clamp(2rem, 4vw + 1rem, 4rem);
+  font-weight: 800; line-height: 1.06; margin: 0;
+}
+.hero-subtitle{
+  font-size: clamp(1.35rem, 3vw + .5rem, 3rem);
+  font-weight: 800; line-height: 1.1; margin: 0;
+  background: linear-gradient(90deg,#7c6cf6 0%, #27c1f1 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+
+/* Texto y botones */
+.hero .lead{ max-width: 900px; margin: 0 auto; color:#374151; }
+.hero .cta{ display:flex; flex-wrap:wrap; gap:12px; justify-content:center; }
+
+/* fondo/ondas detrás */
+.hero .waves, .hero .hero-bg{ position:absolute; inset:0; z-index:0; }
+
+
+
+
+.hero-portrait-left{
+  width: clamp(154px, 19.6vw, 252px); /* 220 / 28vw / 360 -> 70% */
+  aspect-ratio: 3 / 4;
+  border-radius: 50% / 45%;
+}
+
+.hero.hero-compact {
+  padding-block: clamp(40px, 6vw, 80px); /* antes era ~120px o más */
+}
+
+/* Si aún queda mucho espacio, puedes probar este más apretado */
+@media (min-width: 768px) {
+  .hero.hero-compact {
+    padding-block: 40px 30px; /* top y bottom más reducidos */
+  }
+}
+
+/* Ajustar separación entre título, párrafo y sección siguiente */
+.hero.hero-compact .container.hero-content {
+  margin-bottom: 0; /* elimina espacio extra */
+}
+
+.container.page {
+  margin-top: -10px; /* reduce el espacio entre la cabecera y el bloque de datos */
+}
