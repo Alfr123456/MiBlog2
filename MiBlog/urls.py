@@ -27,6 +27,8 @@ urlpatterns = [
     path("proyectos/memoria/",views.memoria,name="memoria"),
     path("proyectos/snake/",views.snake, name="snake"),
     path("proyectos/nexa/",views.nexa, name="nexa"),
-    path("proyectos/ayudantias", views.ayudantias, name="ayudantias")
+    path("proyectos/ayudantias", views.ayudantias, name="ayudantias"),
+    path("",views.home,name="home")
 
 ]
+
